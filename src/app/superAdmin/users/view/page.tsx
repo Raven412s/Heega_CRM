@@ -1,5 +1,5 @@
 "use client"
-import { columns } from '@/components/DataTableComponents/columns';
+import { userColumns } from '@/components/DataTableComponents/columns';
 import { DataTable } from '@/components/DataTableComponents/data-table';
 import React, { useEffect, useState } from 'react';
 
@@ -58,7 +58,7 @@ const ViewUsers: React.FC = () => {
           Here&apos;s a list of your expenses for this month!
         </p>
       </div>
-      <DataTable data={users} columns={columns} />
+      <DataTable data={users} columns={userColumns} />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,6 +31,7 @@ import CustomerNotEndUserFormSection from "./CustomerNotEndUserFormSection";
 import EmployeeFormSection from "./EmployeeSectionForm";
 import { Textarea } from "../ui/textarea";
 import VendorFormSection from "./VendorFormSection";
+import { useRouter } from "next/navigation";
 
 export const formSchema = z.object({
   name: z.string().optional(),
@@ -42,6 +44,8 @@ export const formSchema = z.object({
   wage_advance: z.string().optional(),
   employee_type: z.string().optional(),
   aadharNumber: z.string().optional(),
+  bankAccountNumber: z.string().optional(),
+  PAN_Number: z.string().optional(),
   customer_type: z.string().optional(),
   vendorJoiningDate: z.date().optional(),
   customerJoiningDate: z.date().optional(),
@@ -50,7 +54,9 @@ export const formSchema = z.object({
   shopName: z.string().optional(),
   state: z.string().optional(),
   city: z.string().optional(),
+  distributerPrice: z.string().optional(),
   GST_Number: z.string().optional(),
+  discount: z.string().optional(),
   aadharCardFront: z.instanceof(File).optional(),
   aadharCardBack: z.instanceof(File).optional(),
   gstDocument: z.instanceof(File).optional(),
@@ -61,6 +67,8 @@ export const formSchema = z.object({
         productName: z.string().optional(),
         productRate: z.string().optional(),
         productUnit: z.string().optional(),
+        productHSN: z.string().optional(),
+        productGST: z.string().optional(),
       })
     )
     .optional(),
@@ -77,22 +85,37 @@ const AddUserForm: React.FC = () => {
       email: "",
       address: "",
       role: "",
-      employeeJoiningDate: undefined,
+      //employee fields
+      employeeJoiningDate: Date,
       salary: "",
       wage_advance: "",
       employee_type: "",
       aadharNumber: "",
+      PAN_Number: "",
+      bankAccountNumber: "",
+      //customer fields
       customer_type: "",
       customerJoiningDate: new Date(),
-      vendorJoiningDate: new Date(),
-      individualJoiningDate: new Date(),
-      _createdAt:new Date(),
       salesTarget: "",
       shopName: "",
       state: "",
       city: "",
       GST_Number: "",
+      distributerPrice: "",
+      discount: "",
+      //vendor fields
+      vendorJoiningDate: new Date(),
       products: [],
+      //shopName: "",
+    //   state: "",
+    //   city: "",
+    //   GST_Number: "",
+
+
+      individualJoiningDate: new Date(),
+      _createdAt:new Date(),
+
+
     },
   });
 
@@ -101,21 +124,25 @@ const AddUserForm: React.FC = () => {
   const [vendorJoiningDate, setVendorJoiningDate] = useState<Date | undefined>(new Date());
   const [role, setRole] = useState("");
   const [customerType, setCustomerType] = useState("");
-  const { control, handleSubmit, watch } = form;
+  const { control, handleSubmit, watch, formState } = form;
   const { fields, append, remove } = useFieldArray({
     control,
     name: "products",
   });
-
-
+const router = useRouter()
+console.log("form submittion err :",formState.errors)
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
+        const convertedData = {
+            ...data,
+            employeeJoiningDate: new Date(data.employeeJoiningDate),
+          };
       const response = await fetch('/api/submit-form', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(convertedData),
       });
 
       if (!response.ok) {
@@ -125,6 +152,7 @@ const AddUserForm: React.FC = () => {
       const result = await response.json();
       console.log(result)
       form.reset();
+      router.push("/superAdmin/users/view")
       // Optionally, handle success (e.g., show a success message, reset the form, etc.)
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -372,6 +400,55 @@ const AddUserForm: React.FC = () => {
                         </FormItem>
                       )}
                     />
+                      <FormField
+                      control={control}
+                      name={`products[${index}].productHSN`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Product HSN</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter Product HSN" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                       <FormField
+                      control={control}
+                      name={`products[${index}].productGST`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>GST CATEGORY</FormLabel>
+                          <FormControl>
+                            <Controller
+                              name={`products[${index}].productGST`}
+                              control={control}
+                              render={({ field }) => (
+                                <Select
+                                  value={field.value}
+                                  onValueChange={(value) => {
+                                    field.onChange(value); // Update form state
+                                  }}
+                                >
+                                  <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Select GST%" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="5% GST">5% GST</SelectItem>
+                                    <SelectItem value="5% IGST">5% IGST</SelectItem>
+                                    <SelectItem value="12% GST">12% GST</SelectItem>
+                                    <SelectItem value="12% IGST">12% IGST</SelectItem>
+                                    <SelectItem value="18% GST">18% GST</SelectItem>
+                                    <SelectItem value="18% IGST">18% IGST</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              )}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <Button type="button" onClick={() => remove(index)}>
                       Remove Product
                     </Button>
@@ -386,6 +463,8 @@ const AddUserForm: React.FC = () => {
                         productName: "",
                         productRate: "",
                         productUnit: "",
+                        productHSN:"",
+                        productGST:"",
                       })
                     }
                   >

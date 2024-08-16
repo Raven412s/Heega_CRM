@@ -151,6 +151,33 @@ const EmployeeFormSection: React.FC<{
             </FormItem>
           )}
         />
+        {/* PAN Number */}
+        <FormField
+          control={control}
+          name="PAN_Number"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>PAN Number</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter PAN Number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={control}
+          name="bankAccountNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bank Account Number</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter Bank Account Number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
     </div>
   );

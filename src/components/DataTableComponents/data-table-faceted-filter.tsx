@@ -80,9 +80,9 @@ export function DataTableFacetedFilter<TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
-          <CommandInput placeholder={title} />
+      <PopoverContent className="w-[230px] max-h-[400px] p-2 overflow-auto" align="start">
+        <Command className="relative">
+          <CommandInput placeholder={title} className="sticky top-0"/>
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>

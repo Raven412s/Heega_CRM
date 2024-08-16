@@ -13,7 +13,7 @@ interface VendorFormSectionProps {
   control: any;
   vendorJoiningDate: Date | undefined;
   setVendorJoiningDate: (date: Date | undefined) => void;
-} 
+}
 
 const VendorFormSection: React.FC<VendorFormSectionProps> = ({
   control,
@@ -79,19 +79,6 @@ const VendorFormSection: React.FC<VendorFormSectionProps> = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={control}
-          name="city"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>City</FormLabel>
-              <FormControl>
-                <Input placeholder="City Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
       </div>
       <div className="flex flex-col w-[300px]">
         <FormField
@@ -107,31 +94,19 @@ const VendorFormSection: React.FC<VendorFormSectionProps> = ({
             </FormItem>
           )}
         />
-         <FormField
+          <FormField
           control={control}
-          name="gstDocument"
+          name="city"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Aadhar Card Back</FormLabel>
+              <FormLabel>City</FormLabel>
               <FormControl>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  {...field}
-                  onChange={(e) => handleFileChange(e, setGstDocument)} // Call handleFileChange with field name
-                />
+                <Input placeholder="City Name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        {gstDocument && (
-  <img
-    src={URL.createObjectURL(gstDocument)}
-    alt="Selected Aadhaar Card Front"
-    className="w-full h-32 object-contain my-3"
-  />
-)}
       </div>
     </div>
   );

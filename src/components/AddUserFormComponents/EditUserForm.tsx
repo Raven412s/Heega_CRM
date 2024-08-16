@@ -14,39 +14,45 @@ import VendorFormSection from "./VendorFormSection";
 import { Button } from "../ui/button";
 
 // Define the form schema using Zod
-const formSchema = z.object({
-  name: z.string().optional(),
-  mobile: z.string().optional(),
-  email: z.string().email().optional(),
-  address: z.string().optional(),
-  role: z.string().optional(),
-  employeeJoiningDate: z.date().optional(),
-  salary: z.string().optional(),
-  wage_advance: z.string().optional(),
-  employee_type: z.string().optional(),
-  aadharNumber: z.string().optional(),
-  customer_type: z.string().optional(),
-  vendorJoiningDate: z.date().optional(),
-  customerJoiningDate: z.date().optional(),
-  individualJoiningDate: z.date().optional(),
-  salesTarget: z.string().optional(),
-  shopName: z.string().optional(),
-  state: z.string().optional(),
-  city: z.string().optional(),
-  GST_Number: z.string().optional(),
-  products: z.array(
-    z.object({
-      productName: z.string().optional(),
-      productRate: z.string().optional(),
-      productUnit: z.string().optional(),
-    })
-  ).optional(),
-  _createdAt: z.date().optional(),
-  aadharCardFront: z.instanceof(File).optional(),
-  aadharCardBack: z.instanceof(File).optional(),
-  gstDocument: z.instanceof(File).optional(),
-});
-
+export const formSchema = z.object({
+    name: z.string().optional(),
+    mobile: z.string().optional(),
+    email: z.string().email().optional(),
+    address: z.string().optional(),
+    role: z.string().optional(),
+    employeeJoiningDate: z.date().optional(),
+    salary: z.string().optional(),
+    wage_advance: z.string().optional(),
+    employee_type: z.string().optional(),
+    aadharNumber: z.string().optional(),
+    bankAccountNumber: z.string().optional(),
+    PAN_Number: z.string().optional(),
+    customer_type: z.string().optional(),
+    vendorJoiningDate: z.date().optional(),
+    customerJoiningDate: z.date().optional(),
+    individualJoiningDate: z.date().optional(),
+    salesTarget: z.string().optional(),
+    shopName: z.string().optional(),
+    state: z.string().optional(),
+    city: z.string().optional(),
+    distributorPrice: z.string().optional(),
+    GST_Number: z.string().optional(),
+    aadharCardFront: z.instanceof(File).optional(),
+    aadharCardBack: z.instanceof(File).optional(),
+    gstDocument: z.instanceof(File).optional(),
+    _createdAt:z.date(),
+    products: z
+      .array(
+        z.object({
+          productName: z.string().optional(),
+          productRate: z.string().optional(),
+          productUnit: z.string().optional(),
+          productHSN: z.string().optional(),
+          productGST: z.string().optional(),
+        })
+      )
+      .optional(),
+  });
 type FormValues = z.infer<typeof formSchema>;
 
 interface EditUserFormProps {
@@ -59,7 +65,6 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ formData, id }) => {
     resolver: zodResolver(formSchema),
     defaultValues: formData,
   });
-  console.log("formData :",formData)
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [customerJoiningDate, setCustomerJoiningDate] = useState<Date | undefined>(new Date());
   const [vendorJoiningDate, setVendorJoiningDate] = useState<Date | undefined>(new Date());
@@ -72,25 +77,29 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ formData, id }) => {
   });
 const router=useRouter()
   useEffect(() => {
-    // Reset the form with the fetched data when formData changes
     reset(formData);
   }, [formData, reset]);
 
-  console.log("formState.errors", formState.errors)
+  console.log("formState.errors :", formState.errors)
 
   const handleUpdate: SubmitHandler<FormValues> = async (data) => {
-    // Convert date strings to Date objects if necessary
-console.log(data)
+        console.log(data)
+
+
 
     try {
         console.log("convertedData :",data)
-      const response = await fetch(`/api/update-user?_id=${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+        const convertedData = {
+            ...data,
+            employeeJoiningDate: new Date(data?.employeeJoiningDate),
+          };
+             const response = await fetch(`/api/update-user?_id=${id}`, {
+               method: "PATCH",
+               headers: {
+                 "Content-Type": "application/json",
+               },
+               body: JSON.stringify(convertedData),
+             });
 
 
       if (response.ok) {
@@ -190,7 +199,8 @@ console.log(data)
                               <SelectValue placeholder="Select" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="1">Select</SelectItem>
+                              <SelectItem value="ceo">CEO</SelectItem>
+                              <SelectItem value="manager">Manager</SelectItem>
                               <SelectItem value="employee">Employee</SelectItem>
                               <SelectItem value="customer">Customer</SelectItem>
                               <SelectItem value="vendor">Vendor</SelectItem>
@@ -243,7 +253,7 @@ console.log(data)
             </div>
           </div>
 
-          {role === "employee" && (
+          {(role === "employee" || role === "manager" )&& (
             <EmployeeFormSection
               control={control}
               setDate={setDate}
@@ -272,7 +282,7 @@ console.log(data)
               setVendorJoiningDate={setVendorJoiningDate}
             />
           )}
-          {role === "vendor" && (
+         {role === "vendor" && (
             <>
               {/* Products Section */}
               <div className="mt-4">
@@ -349,6 +359,55 @@ console.log(data)
                         </FormItem>
                       )}
                     />
+                      <FormField
+                      control={control}
+                      name={`products[${index}].productHSN`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Product HSN</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter Product HSN" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                       <FormField
+                      control={control}
+                      name={`products[${index}].productGST`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>GST CATEGORY</FormLabel>
+                          <FormControl>
+                            <Controller
+                              name={`products[${index}].productGST`}
+                              control={control}
+                              render={({ field }) => (
+                                <Select
+                                  value={field.value}
+                                  onValueChange={(value) => {
+                                    field.onChange(value); // Update form state
+                                  }}
+                                >
+                                  <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Select GST%" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="5% GST">5% GST</SelectItem>
+                                    <SelectItem value="5% IGST">5% IGST</SelectItem>
+                                    <SelectItem value="12% GST">12% GST</SelectItem>
+                                    <SelectItem value="12% IGST">12% IGST</SelectItem>
+                                    <SelectItem value="18% GST">18% GST</SelectItem>
+                                    <SelectItem value="18% IGST">18% IGST</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              )}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <Button type="button" onClick={() => remove(index)}>
                       Remove Product
                     </Button>
@@ -363,6 +422,8 @@ console.log(data)
                         productName: "",
                         productRate: "",
                         productUnit: "",
+                        productHSN:"",
+                        productGST:"",
                       })
                     }
                   >

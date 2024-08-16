@@ -3,14 +3,15 @@ import { Poppins as FontSans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster"
 import { cn } from "@/lib/utils"
-import { ThemeProvider } from "@/components/Theme-provider";
+
+import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
   weight:["100","200","300","400","500","600","700","800","900"]
 })
-
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,19 +24,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+   <ClerkProvider>
+     <html lang="en">
       <body className={cn(
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable
         )}>
-
-      
           <main>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             {children}
+         </ThemeProvider>
             </main>
             <Toaster />
-
         </body>
-    </html>
+      </html>
+   </ClerkProvider>
   );
 }

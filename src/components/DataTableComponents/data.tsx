@@ -1,4 +1,6 @@
-import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
+"use client"
+
+import { useEffect, useState } from "react";
 
 export const role = [
   {
@@ -13,19 +15,12 @@ export const role = [
     value: "vendor",
     label: "Vendor"
   },
-];
-
-export const types = [
   {
-    label: "Distributer",
-    value: "distributer",
+    value: "ceo",
+    label: "CEO"
   },
   {
-    label: "Retailer",
-    value: "retailer",
-  },
-  {
-    label: "End User",
-    value: "end_user",
+    value: "manager",
+    label: "Manager"
   },
 ];
