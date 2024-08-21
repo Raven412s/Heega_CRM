@@ -2,7 +2,6 @@ import { UserButton } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import logo from "../../../../public/Images/Heega-Logo.webp"
-import ThemeSwitcher from '@/components/ThemeSwitcher'
 
 
 const Navbar = () => {
@@ -11,9 +10,9 @@ const Navbar = () => {
         <Link href={"/"}>
         <Image src={logo} alt='logo' width={50} height={50}/>
         </Link>
-        <div className='flex gap-4 items-center'>
-        <ThemeSwitcher/> <UserButton/>
-        </div>
+       <UserButton />
+
+
     </div>
   )
 }

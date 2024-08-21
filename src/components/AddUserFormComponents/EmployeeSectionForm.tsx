@@ -18,10 +18,6 @@ const EmployeeFormSection: React.FC<{
   date: Date | undefined;
   form: any;
  }> = ({ control, setDate, date, form }) => {
-    const [aadharCardFront, setAadharCardFront] = useState<File | null>(null);
-    const [aadharCardBack, setAadharCardBack] = useState<File | null>(null);
-
-
 
   return (
     <div className="flex gap-4">

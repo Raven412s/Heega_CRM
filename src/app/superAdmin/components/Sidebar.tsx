@@ -1,28 +1,32 @@
+import React from 'react'
+import {
+    Command,
+    CommandDialog,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+    CommandShortcut,
+  } from "@/components/ui/command"
+import { LayoutDashboard, User2, UserPlus2, UserRoundPen } from 'lucide-react'
+import Link from 'next/link'
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList
-} from "@/components/ui/command";
-import { LayoutDashboard, User2, UserPlus2 } from 'lucide-react';
-import { FaClipboardList } from "react-icons/fa";
-import Link from 'next/link';
-import { BiCartAdd } from "react-icons/bi";
+  } from "@/components/ui/accordion"
+
+
 
 const Sidebar = () => {
   return (
     <>
-         <Command className='bg-secondary left-0  w-[300px] focus:outline-none max-h-[100vh] rounded-none'>
+         <Command className='bg-secondary  left-0  w-[300px] focus:outline-none max-h-[100vh]'>
           <CommandInput placeholder="Type a command or search..." />
-          <CommandList>
+          <CommandList className='relative h-screen'>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Suggestions">
                 <Link href="/superAdmin/dashboard">
@@ -33,44 +37,44 @@ const Sidebar = () => {
                 </Link>
               <Accordion type="single" collapsible>
                  <AccordionItem value="item-1">
-                   <AccordionTrigger className='text-sm mx-4'>User Management</AccordionTrigger>
+                   <AccordionTrigger className='text-slate-500 mx-4'>User Management</AccordionTrigger>
                     <AccordionContent>
                         <Link href="/superAdmin/users/add">
-                            <CommandItem className='flex  items-center'>
+                            <CommandItem>
                                 <UserPlus2 className='mr-2 h-4 w-4' />
-                                <h3 className="cursor-pointer">Add New User</h3>
+                                Add New User
                             </CommandItem>
                         </Link>
                         <Link href="/superAdmin/users/view">
-                            <CommandItem className='flex  items-center'>
+                            <CommandItem>
                                 <User2 className='mr-2 h-4 w-4' />
-                                <h3 className="cursor-pointer">View All Users</h3>
+                                View All Users
                             </CommandItem>
                         </Link>
 
                     </AccordionContent>
                  </AccordionItem>
                  <AccordionItem value="item-2">
-                   <AccordionTrigger className='text-sm mx-4'>Product Management</AccordionTrigger>
+                   <AccordionTrigger className='text-slate-500 mx-4'>Product Management</AccordionTrigger>
                     <AccordionContent>
                         <Link href="/superAdmin/products/add">
-                            <CommandItem className='flex  items-center'>
-                                <BiCartAdd className='mr-2 h-4 w-4' />
-                                <h3 className="cursor-pointer">Add New Product</h3>
+                            <CommandItem>
+                                <UserPlus2 className='mr-2 h-4 w-4' />
+                                Add Products
                             </CommandItem>
                         </Link>
                         <Link href="/superAdmin/products/view">
-                            <CommandItem className='flex  items-center'>
-                                <FaClipboardList className='mr-2 h-4 w-4' />
-                                <h3 className="cursor-pointer">Product List</h3>
+                            <CommandItem>
+                                <User2 className='mr-2 h-4 w-4' />
+                                Products List
                             </CommandItem>
                         </Link>
 
                     </AccordionContent>
                  </AccordionItem>
                </Accordion>
-
             </CommandGroup>
+
           </CommandList>
         </Command>
 

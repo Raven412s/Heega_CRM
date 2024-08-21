@@ -10,7 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex items-center justify-center h-screen">{children}</body>
+      <body className="flex bg-zinc-100 z-50 items-center justify-center h-screen">{children}</body>
     </html>
   )
 }

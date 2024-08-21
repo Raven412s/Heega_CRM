@@ -33,6 +33,7 @@ import { Textarea } from "../ui/textarea";
 import VendorFormSection from "./VendorFormSection";
 import { useRouter } from "next/navigation";
 
+
 export const formSchema = z.object({
   name: z.string().optional(),
   mobile: z.string().optional(),
@@ -54,9 +55,7 @@ export const formSchema = z.object({
   shopName: z.string().optional(),
   state: z.string().optional(),
   city: z.string().optional(),
-  distributerPrice: z.string().optional(),
   GST_Number: z.string().optional(),
-  discount: z.string().optional(),
   aadharCardFront: z.instanceof(File).optional(),
   aadharCardBack: z.instanceof(File).optional(),
   gstDocument: z.instanceof(File).optional(),
@@ -86,7 +85,7 @@ const AddUserForm: React.FC = () => {
       address: "",
       role: "",
       //employee fields
-      employeeJoiningDate: Date,
+      employeeJoiningDate:new Date() || null,
       salary: "",
       wage_advance: "",
       employee_type: "",
@@ -101,8 +100,6 @@ const AddUserForm: React.FC = () => {
       state: "",
       city: "",
       GST_Number: "",
-      distributerPrice: "",
-      discount: "",
       //vendor fields
       vendorJoiningDate: new Date(),
       products: [],
@@ -152,6 +149,7 @@ console.log("form submittion err :",formState.errors)
       const result = await response.json();
       console.log(result)
       form.reset();
+
       router.push("/superAdmin/users/view")
       // Optionally, handle success (e.g., show a success message, reset the form, etc.)
     } catch (error) {

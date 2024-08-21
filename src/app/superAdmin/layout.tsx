@@ -1,5 +1,5 @@
-import Navbar from "./components/Navbar"
-import Sidebar from "./components/Sidebar"
+import Navbar from "@/components/Navbar"
+
 
 
 export default function DashboardLayout({
@@ -13,8 +13,7 @@ export default function DashboardLayout({
        <Navbar />
        <div className="flex relative">
         <div className="hidden relative md:block h-[100vh] max-w-[300px]  ">
-       <Sidebar/>
-        </div>
+       </div>
         <div className="p-5 w-full md:max-w-[1140px]">
         {children}
         </div>

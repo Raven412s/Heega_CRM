@@ -1,5 +1,6 @@
 // models/User.ts
 import mongoose, { Document, Schema } from 'mongoose';
+import { optional } from 'zod';
 
 // Define TypeScript interface for the User document
 interface IUser extends Document {
@@ -33,7 +34,7 @@ const UserSchema: Schema = new Schema({
   email: { type: String, required: true },
   address: { type: String, required: true },
   role: { type: String, required: true },
-  employeeJoiningDate: { type: Date },
+  employeeJoiningDate: { type: Date, optional: true },
   salary: { type: String },
   wage_advance: { type: String },
   employee_type: { type: String },

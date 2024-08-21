@@ -79,19 +79,16 @@ const router=useRouter()
   useEffect(() => {
     reset(formData);
   }, [formData, reset]);
-
+console.log("formState", formState)
   console.log("formState.errors :", formState.errors)
 
   const handleUpdate: SubmitHandler<FormValues> = async (data) => {
         console.log(data)
-
-
-
     try {
         console.log("convertedData :",data)
         const convertedData = {
             ...data,
-            employeeJoiningDate: new Date(data?.employeeJoiningDate),
+            employeeJoiningDate: new Date(data?.employeeJoiningDate) || null,
           };
              const response = await fetch(`/api/update-user?_id=${id}`, {
                method: "PATCH",

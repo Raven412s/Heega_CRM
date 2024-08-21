@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import { Poppins as FontSans } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster"
-import { cn } from "@/lib/utils"
+import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import HandleRoutingAndSidebar from "@/components/HandleRouting";
+import ClearRoutingFlagOnLogout from "@/components/ClearRoutingFlagOnLogout";
+import Navbar from "@/components/Navbar";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-  weight:["100","200","300","400","500","600","700","800","900"]
-})
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,25 +27,42 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-   <ClerkProvider>
-     <html lang="en">
-      <body className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable
+          )}
+        >
           <main>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-         </ThemeProvider>
-            </main>
-            <Toaster />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <ClearRoutingFlagOnLogout />
+
+              {/* Navbar should be positioned at the top */}
+              <Navbar />
+
+              <section className="flex">
+                {/* Sidebar on the left */}
+                <div className="hidden md:block h-[100vh] max-w-[300px]">
+                  <HandleRoutingAndSidebar />
+                </div>
+
+                {/* Main content area */}
+                <div className="p-5 w-full md:max-w-[1140px]">
+                  {children}
+                </div>
+              </section>
+            </ThemeProvider>
+          </main>
+          <Toaster />
         </body>
       </html>
-   </ClerkProvider>
+    </ClerkProvider>
   );
 }

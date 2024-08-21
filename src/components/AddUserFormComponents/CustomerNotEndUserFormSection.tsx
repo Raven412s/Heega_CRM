@@ -124,32 +124,6 @@ const CustomerNotEndUserFormSection: React.FC<CustomerNotEndUserFormSectionProps
               </FormItem>
             )}
           />
-           <FormField
-            control={control}
-            name="distributor_Price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Distributor Price</FormLabel>
-                <FormControl>
-                  <Input placeholder="Distributor Price" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={control}
-            name="discount"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Discount</FormLabel>
-                <FormControl>
-                  <Input placeholder="Discount" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={control}
             name="GST_Number"
